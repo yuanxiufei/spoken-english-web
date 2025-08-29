@@ -2,12 +2,15 @@
   <div class="course-card group" @click="handleClick">
     <!-- 课程缩略图 -->
     <div class="course-thumbnail">
-      <img 
-        :src="course.thumbnail || '/images/course-placeholder.jpg'"
-        :alt="course.title"
-        class="thumbnail-image"
-        loading="lazy"
-      />
+      <div class="thumbnail-container">
+        <img 
+          :src="course.thumbnail || '/images/course-placeholder.svg'"
+          :alt="course.title"
+          class="thumbnail-image"
+          loading="lazy"
+        />
+        <div class="thumbnail-overlay"></div>
+      </div>
       
       <!-- 课程时长覆盖层 -->
       <div class="duration-overlay">
@@ -17,9 +20,25 @@
         <span class="ml-1">{{ formatDuration(course.duration) }}</span>
       </div>
       
-      <!-- 免费标签 -->
-      <div v-if="course.isFree" class="free-badge">
-        免费
+      <!-- 标签区域 -->
+      <div class="badges-container">
+        <!-- 免费标签 -->
+        <div v-if="course.isFree" class="free-badge">
+          <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+          免费
+        </div>
+        
+        <!-- 热门标签 -->
+        <div v-if="course.isPopular" class="popular-badge">
+          🔥 热门
+        </div>
+        
+        <!-- 推荐标签 -->
+        <div v-if="course.isFeatured" class="featured-badge">
+          ⭐ 推荐
+        </div>
       </div>
     </div>
     
@@ -124,6 +143,8 @@ interface Course {
   isFree: boolean
   price: number
   originalPrice?: number
+  isPopular?: boolean
+  isFeatured?: boolean
 }
 
 interface Props {
@@ -164,6 +185,46 @@ function getLevelText(level: string): string {
   return (levelMap as any)[level] || level
 }
 
+function generatePlaceholder(title: string): string {
+  // 生成基于课程标题的渐变背景占位图
+  const colors = [
+    ['#3b82f6', '#8b5cf6'], // 蓝紫
+    ['#10b981', '#3b82f6'], // 绿蓝
+    ['#f59e0b', '#ef4444'], // 橙红
+    ['#8b5cf6', '#ec4899'], // 紫粉
+    ['#06b6d4', '#10b981'], // 青绿
+  ]
+  
+  const colorIndex = title.charCodeAt(0) % colors.length
+  const [color1, color2] = colors[colorIndex]
+  
+  // 获取标题的前两个字符，如果是中文则只取一个字符
+  const displayText = title.length > 0 ? 
+    (title.charCodeAt(0) > 127 ? title.slice(0, 1) : title.slice(0, 2)) : 'C'
+  
+  const svg = `
+    <svg width="400" height="225" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:${color1};stop-opacity:1" />
+          <stop offset="100%" style="stop-color:${color2};stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#grad)"/>
+      <text x="50%" y="50%" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="white" text-anchor="middle" dy=".3em">${displayText}</text>
+    </svg>
+  `
+  
+  // 使用更安全的方式处理UTF-8编码
+  try {
+    const encoded = btoa(unescape(encodeURIComponent(svg)))
+    return `data:image/svg+xml;base64,${encoded}`
+  } catch (error) {
+    // 如果编码失败，返回URL编码的SVG
+    return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`
+  }
+}
+
 function handleClick() {
   if (props.clickable) {
     emit('click', props.course)
@@ -174,23 +235,49 @@ function handleClick() {
 
 <style scoped>
 .course-card {
-  @apply relative bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition-all duration-300 hover:shadow-lg hover:scale-[1.02] cursor-pointer;
+  @apply relative bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden transition-all duration-500 hover:shadow-2xl hover:scale-[1.03] cursor-pointer;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+}
+
+.course-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
 }
 
 .course-thumbnail {
   @apply relative aspect-video overflow-hidden;
 }
 
+.thumbnail-container {
+  @apply relative w-full h-full;
+}
+
 .thumbnail-image {
-  @apply w-full h-full object-cover transition-transform duration-300 group-hover:scale-105;
+  @apply w-full h-full object-cover transition-all duration-500 group-hover:scale-110;
+}
+
+.thumbnail-overlay {
+  @apply absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300;
 }
 
 .duration-overlay {
-  @apply absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded flex items-center;
+  @apply absolute bottom-3 right-3 bg-black/80 backdrop-blur-sm text-white text-xs px-3 py-1.5 rounded-full flex items-center gap-1 font-medium;
+}
+
+.badges-container {
+  @apply absolute top-3 left-3 flex flex-col gap-2;
 }
 
 .free-badge {
-  @apply absolute top-2 left-2 bg-green-500 text-white text-xs px-2 py-1 rounded font-medium;
+  @apply bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs px-3 py-1.5 rounded-full font-semibold flex items-center gap-1 shadow-lg;
+}
+
+.popular-badge {
+  @apply bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs px-3 py-1.5 rounded-full font-semibold shadow-lg;
+}
+
+.featured-badge {
+  @apply bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs px-3 py-1.5 rounded-full font-semibold shadow-lg;
 }
 
 .course-info {

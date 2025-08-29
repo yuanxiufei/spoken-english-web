@@ -1,51 +1,80 @@
 <template>
-  <nav class="navbar">
-    <div class="container">
+  <nav class="navbar bg-white/95 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50 transition-all duration-300">
+    <div class="container mx-auto px-4">
       <div class="flex items-center justify-between h-16">
         <!-- Logo -->
         <div class="flex items-center space-x-4">
-          <NuxtLink to="/" class="flex items-center space-x-2 text-xl font-bold text-gradient">
-            <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10m0 0V6a2 2 0 00-2-2H9a2 2 0 00-2 2v2m10 0v10a2 2 0 01-2 2H9a2 2 0 01-2-2V8m10 0H7" />
-            </svg>
-            <span>SpeakEasy</span>
+          <NuxtLink to="/" class="group flex items-center space-x-3 text-xl font-bold transition-all duration-300 hover:scale-105">
+            <div class="relative">
+              <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg blur opacity-75 group-hover:opacity-100 transition-opacity"></div>
+              <div class="relative bg-gradient-to-r from-blue-600 to-purple-600 p-2 rounded-lg">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10m0 0V6a2 2 0 00-2-2H9a2 2 0 00-2 2v2m10 0v10a2 2 0 01-2 2H9a2 2 0 01-2-2V8m10 0H7" />
+                </svg>
+              </div>
+            </div>
+            <span class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent font-extrabold">SpeakEasy</span>
           </NuxtLink>
         </div>
 
         <!-- Desktop Navigation -->
-        <div class="hidden md:flex items-center space-x-8">
+        <div class="hidden md:flex items-center space-x-1">
           <NuxtLink 
             to="/" 
-            class="nav-link"
-            :class="{ 'nav-link-active': $route.path === '/' }"
+            class="nav-link group relative px-4 py-2 rounded-lg transition-all duration-300"
+            :class="{ 'nav-link-active bg-blue-50 text-blue-600': $route.path === '/' }"
           >
-            首页
+            <span class="relative z-10 flex items-center gap-2">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+              </svg>
+              首页
+            </span>
+            <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity"></div>
           </NuxtLink>
           <NuxtLink 
             to="/courses" 
-            class="nav-link"
-            :class="{ 'nav-link-active': $route.path.startsWith('/courses') }"
+            class="nav-link group relative px-4 py-2 rounded-lg transition-all duration-300"
+            :class="{ 'nav-link-active bg-blue-50 text-blue-600': $route.path.startsWith('/courses') }"
           >
-            课程
+            <span class="relative z-10 flex items-center gap-2">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+              </svg>
+              课程
+            </span>
+            <div class="absolute inset-0 bg-gradient-to-r from-green-500 to-blue-500 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity"></div>
           </NuxtLink>
           <NuxtLink 
             to="/learn" 
-            class="nav-link"
-            :class="{ 'nav-link-active': $route.path === '/learn' }"
+            class="nav-link group relative px-4 py-2 rounded-lg transition-all duration-300"
+            :class="{ 'nav-link-active bg-blue-50 text-blue-600': $route.path === '/learn' }"
           >
-            学习
+            <span class="relative z-10 flex items-center gap-2">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.1 0-1.99.9-1.99 2L3 20c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
+              </svg>
+              学习
+            </span>
+            <div class="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity"></div>
           </NuxtLink>
           <NuxtLink 
             to="/chat" 
-            class="nav-link"
-            :class="{ 'nav-link-active': $route.path === '/chat' }"
+            class="nav-link group relative px-4 py-2 rounded-lg transition-all duration-300"
+            :class="{ 'nav-link-active bg-blue-50 text-blue-600': $route.path === '/chat' }"
           >
-            AI对话
+            <span class="relative z-10 flex items-center gap-2">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4l4 4 4-4h4c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+              </svg>
+              AI对话
+            </span>
+            <div class="absolute inset-0 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity"></div>
           </NuxtLink>
         </div>
 
         <!-- User Actions -->
-        <div class="hidden md:flex items-center space-x-4">
+        <div class="hidden md:flex items-center space-x-3">
           <template v-if="isLoggedIn">
             <!-- User Menu -->
             <NDropdown trigger="click" :options="userMenuOptions" @select="handleUserMenuSelect">
@@ -62,10 +91,16 @@
             </NDropdown>
           </template>
           <template v-else>
-            <NuxtLink to="/auth/login" class="btn btn-secondary btn-sm">
+            <NuxtLink 
+              to="/auth/login" 
+              class="px-4 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-300 border border-gray-300 hover:border-blue-300"
+            >
               登录
             </NuxtLink>
-            <NuxtLink to="/auth/register" class="btn btn-primary btn-sm">
+            <NuxtLink 
+              to="/auth/register" 
+              class="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-md hover:shadow-lg"
+            >
               注册
             </NuxtLink>
           </template>
@@ -73,10 +108,11 @@
 
         <!-- 移动端菜单按钮 -->
         <button 
-          class="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+          class="md:hidden p-2 rounded-xl hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 relative group"
           @click="toggleMobileMenu"
         >
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl opacity-0 group-hover:opacity-10 transition-opacity"></div>
+          <svg class="w-6 h-6 relative z-10 text-gray-700 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </button>
@@ -310,19 +346,76 @@ watch(() => useRoute().path, () => {
 </script>
 
 <style scoped>
+.navbar {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
 .nav-link {
-  @apply text-gray-600 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200;
+  @apply text-gray-600 hover:text-gray-900 font-medium transition-all duration-300;
+  position: relative;
+}
+
+.nav-link:hover {
+  transform: translateY(-1px);
 }
 
 .nav-link-active {
-  @apply text-blue-600 bg-blue-50;
+  @apply text-blue-600;
+  font-weight: 600;
+}
+
+.nav-link-active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  border-radius: 1px;
 }
 
 .mobile-nav-link {
-  @apply block px-3 py-2 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-md transition-colors duration-200;
+  @apply block px-4 py-3 text-base font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-xl transition-all duration-300 mx-2;
+}
+
+.mobile-nav-link:hover {
+  transform: translateX(4px);
+  background: linear-gradient(90deg, rgba(59, 130, 246, 0.05), rgba(139, 92, 246, 0.05));
 }
 
 .mobile-nav-link-active {
-  @apply text-blue-600 bg-blue-50;
+  @apply text-blue-600 bg-blue-50 font-semibold;
+  border-left: 3px solid #3b82f6;
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 用户头像悬停效果 */
+.user-menu:hover .user-avatar {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* 响应式优化 */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }
 </style>

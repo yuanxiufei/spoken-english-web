@@ -4,7 +4,7 @@
 export type CourseLevel = 'beginner' | 'elementary' | 'intermediate' | 'upper-intermediate' | 'advanced' | 'proficient'
 
 // 课程类型
-export type CourseType = 'speaking' | 'listening' | 'reading' | 'writing' | 'grammar' | 'vocabulary' | 'pronunciation' | 'business' | 'exam'
+export type CourseType = 'speaking' | 'listening' | 'reading' | 'writing' | 'grammar' | 'vocabulary' | 'pronunciation' | 'business' | 'exam' | 'conversation' | 'interview' | 'travel'
 
 // 课程状态
 export type CourseStatus = 'draft' | 'published' | 'archived'

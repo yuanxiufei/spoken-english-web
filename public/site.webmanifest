@@ -1,0 +1,16 @@
+{
+  "name": "SpeakEasy - AI英语学习平台",
+  "short_name": "SpeakEasy",
+  "description": "专业的AI英语学习平台，提供智能对话练习、发音纠正、个性化学习路径",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    }
+  ]
+}

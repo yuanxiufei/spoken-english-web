@@ -134,7 +134,7 @@
   </Teleport>
 </template>
 
-<script setup>
+<script setup lang="ts">
 interface Props {
   isOpen: boolean
 }
@@ -146,7 +146,7 @@ interface User {
   avatar?: string
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 
 const emit = defineEmits<{
   close: []
@@ -217,7 +217,7 @@ onUnmounted(() => {
 })
 </script>
 
-<script>
+<script lang="ts">
 // 图标组件
 const IconHome = {
   template: `

@@ -1,40 +1,8 @@
 <template>
   <div class="min-h-screen bg-gray-50">
-    <!-- 导航栏 -->
-    <nav class="bg-white shadow-sm border-b">
-      <div class="container mx-auto px-4">
-        <div class="flex items-center justify-between h-16">
-          <NuxtLink to="/" class="flex items-center space-x-2">
-            <NIcon size="32" color="#3b82f6">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 14q-1.25 0-2.125-.875T9 11V5q0-1.25.875-2.125T12 2q1.25 0 2.125.875T15 5v6q0 1.25-.875 2.125T12 14Zm-1 7v-3.075q-2.6-.35-4.3-2.325Q5 13.625 5 11h2q0 2.075 1.463 3.537Q9.925 16 12 16t3.538-1.463Q17 13.075 17 11h2q0 2.625-1.7 4.6q-1.7 1.975-4.3 2.325V21Z"/>
-              </svg>
-            </NIcon>
-            <h1 class="text-xl font-bold text-gray-800">SpeakEasy</h1>
-          </NuxtLink>
-          <div class="flex items-center space-x-4">
-            <NuxtLink to="/" class="text-gray-600 hover:text-blue-600 transition-colors">
-              首页
-            </NuxtLink>
-            <NuxtLink to="/courses" class="text-gray-600 hover:text-blue-600 transition-colors">
-              课程
-            </NuxtLink>
-            <NuxtLink to="/learn" class="text-gray-600 hover:text-blue-600 transition-colors">
-              学习
-            </NuxtLink>
-            <NuxtLink to="/chat" class="text-gray-600 hover:text-blue-600 transition-colors">
-              AI对话
-            </NuxtLink>
-            <NButton type="primary" size="small">
-              登录
-            </NButton>
-          </div>
-        </div>
-      </div>
-    </nav>
 
     <!-- 面包屑导航 -->
-    <div class="bg-white border-b">
+    <div class="bg-white border-b mt-4">
       <div class="container mx-auto px-4 py-3">
         <NBreadcrumb>
           <NBreadcrumbItem>
@@ -355,15 +323,20 @@ onMounted(async () => {
 })
 
 // SEO配置
-useHead(() => ({
-  title: course.value ? `${course.value.title} - SpeakEasy` : '课程不存在 - SpeakEasy',
-  meta: [
-    { 
-      name: 'description', 
-      content: course.value ? course.value.description : '课程不存在或已被删除' 
-    }
-  ]
-}))
+useHead(() => {
+  const courseTitle = course.value?.title || '课程详情'
+  const courseDescription = course.value?.description || '查看课程详细信息'
+  
+  return {
+    title: `${courseTitle} - SpeakEasy`,
+    meta: [
+      { 
+        name: 'description', 
+        content: courseDescription
+      }
+    ]
+  }
+})
 
 // 方法
 const startCourse = () => {

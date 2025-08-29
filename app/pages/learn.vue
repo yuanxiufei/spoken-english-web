@@ -1,38 +1,8 @@
 <template>
   <div class="min-h-screen bg-gray-50">
-    <!-- 导航栏 -->
-    <nav class="bg-white shadow-sm border-b">
-      <div class="container mx-auto px-4">
-        <div class="flex items-center justify-between h-16">
-          <NuxtLink to="/" class="flex items-center space-x-2">
-            <NIcon size="32" color="#3b82f6">
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 14q-1.25 0-2.125-.875T9 11V5q0-1.25.875-2.125T12 2q1.25 0 2.125.875T15 5v6q0 1.25-.875 2.125T12 14Zm-1 7v-3.075q-2.6-.35-4.3-2.325Q5 13.625 5 11h2q0 2.075 1.463 3.537Q9.925 16 12 16t3.538-1.463Q17 13.075 17 11h2q0 2.625-1.7 4.6q-1.7 1.975-4.3 2.325V21Z"/>
-              </svg>
-            </NIcon>
-            <h1 class="text-xl font-bold text-gray-800">SpeakEasy</h1>
-          </NuxtLink>
-          <div class="flex items-center space-x-4">
-            <NuxtLink to="/" class="text-gray-600 hover:text-blue-600 transition-colors">
-              首页
-            </NuxtLink>
-            <NuxtLink to="/courses" class="text-gray-600 hover:text-blue-600 transition-colors">
-              课程
-            </NuxtLink>
-            <span class="text-blue-600 font-medium">学习</span>
-            <NuxtLink to="/chat" class="text-gray-600 hover:text-blue-600 transition-colors">
-              AI对话
-            </NuxtLink>
-            <NButton type="primary" size="small">
-              登录
-            </NButton>
-          </div>
-        </div>
-      </div>
-    </nav>
 
     <!-- 主要内容 -->
-    <main class="container mx-auto px-4 py-8">
+    <main class="container mx-auto px-4 py-8 mt-10">
       <div class="grid lg:grid-cols-3 gap-8">
         <!-- 左侧学习内容 -->
         <div class="lg:col-span-2 space-y-6">
@@ -40,10 +10,10 @@
           <NCard>
             <div class="flex items-center justify-between mb-4">
               <div>
-                <h1 class="text-2xl font-bold text-gray-900">{{ currentLesson.title }}</h1>
-                <p class="text-gray-600">{{ currentLesson.description }}</p>
+                <h1 class="text-2xl font-bold text-gray-900">{{ currentLesson?.title || '加载中...' }}</h1>
+                <p class="text-gray-600">{{ currentLesson?.description || '正在加载课程内容' }}</p>
               </div>
-              <NBadge :value="currentLesson.type" type="info" />
+              <NBadge :value="currentLesson?.type || '课程'" type="info" />
             </div>
             <NProgress :percentage="lessonProgress" class="mb-4" />
             <div class="text-sm text-gray-500">
@@ -70,9 +40,9 @@
             <div class="space-y-6">
               <!-- 文本内容 -->
               <div class="bg-blue-50 p-6 rounded-lg">
-                <h3 class="text-lg font-semibold mb-3">{{ currentLesson.content.title }}</h3>
+                <h3 class="text-lg font-semibold mb-3">{{ currentLesson?.content?.title || '学习内容' }}</h3>
                 <p class="text-gray-700 text-lg leading-relaxed mb-4">
-                  {{ currentLesson.content.text }}
+                  {{ currentLesson?.content?.text || '正在加载学习内容...' }}
                 </p>
                 <div class="flex items-center space-x-4">
                   <NButton 
@@ -174,7 +144,7 @@
               <div v-if="currentLesson.grammar" class="bg-purple-50 p-6 rounded-lg">
                 <h3 class="text-lg font-semibold mb-3">语法要点</h3>
                 <div class="space-y-3">
-                  <div v-for="point in currentLesson.grammar" :key="point.title">
+                  <div v-for="point in currentLesson?.grammar || []" :key="point.title">
                     <h4 class="font-medium text-purple-800">{{ point.title }}</h4>
                     <p class="text-gray-700">{{ point.explanation }}</p>
                     <div v-if="point.examples" class="mt-2">
@@ -255,7 +225,7 @@
               <h3 class="font-semibold">快捷操作</h3>
             </template>
             <div class="space-y-3">
-              <NButton block @click="markAsCompleted" :disabled="currentLesson.completed">
+              <NButton block @click="markAsCompleted" :disabled="currentLesson?.completed">
                 标记为已完成
               </NButton>
               <NButton block ghost @click="addToFavorites">
@@ -421,7 +391,7 @@ const initSpeechAPIs = () => {
 }
 
 const speakText = () => {
-  if (!speechSynthesis || isSpeaking.value) return
+  if (!speechSynthesis || isSpeaking.value || !currentLesson.value?.content?.text) return
   
   const utterance = new SpeechSynthesisUtterance(currentLesson.value.content.text)
   utterance.rate = speechRate.value
@@ -456,6 +426,8 @@ const toggleRecording = () => {
 }
 
 const analyzePronunciation = (spokenText) => {
+  if (!currentLesson.value?.content?.text) return
+  
   const originalText = currentLesson.value.content.text.toLowerCase()
   const spoken = spokenText.toLowerCase()
   
